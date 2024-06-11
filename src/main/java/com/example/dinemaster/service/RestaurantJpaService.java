@@ -1,41 +1,81 @@
-package com.example.dinemaster.controller;
+package com.example.dinemaster.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.dinemaster.model.Restaurant;
-import com.example.dinemaster.service.RestaurantJpaService;
+import com.example.dinemaster.repository.RestaurantJpaRepository;
+import com.example.dinemaster.repository.RestaurantRepository;
 
-
-@RestController
-public class RestaurantController {
+@Service
+public class RestaurantJpaService implements RestaurantRepository {
 
     @Autowired
-    private RestaurantJpaService s;
+    private RestaurantJpaRepository db;
 
-    @GetMapping("/restaurants")
+    @Override
     public ArrayList<Restaurant> getRestaurants() {
-        return s.getRestaurants();
+        return (ArrayList<Restaurant>) db.findAll();
     }
 
-    @GetMapping("/restaurants/{restaurantId}")
-    public Restaurant getRestaurantById(@PathVariable("restaurantId") int restaurantId) {
-        return s.getRestaurantById(restaurantId);
+    @Override
+    public Restaurant getRestaurantById(int restaurantId) {
+        try {
+            Restaurant restaurant = db.findById(restaurantId).get();
+            return restaurant;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
-        return s.addRestaurant(restaurant);
+    @Override
+    public Restaurant addRestaurant(Restaurant restaurant) {
+        try {
+            db.save(restaurant);
+
+            return restaurant;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PutMapping("/restaurants/{restaurantId}")
-    public Restaurant updateRestaurant(@PathVariable("restaurantId") int restaurantId, @RequestBody Restaurant restaurant) {
-        return s.updateRestaurant(restaurantId, restaurant);
+    @Override
+    public Restaurant updateRestaurant(int restaurantId, Restaurant restaurant) {
+        try {
+            Restaurant newOne = db.findById(restaurantId).get();
+            if (restaurant.getName() != null) {
+                newOne.setName(restaurant.getName());
+            }
+            if (restaurant.getAddress() != null) {
+                newOne.setAddress(restaurant.getAddress());
+            }
+            if (restaurant.getCuisineType() != null) {
+                newOne.setCuisineType(restaurant.getCuisineType());
+            }
+            if (restaurant.getRating() != 0) {
+                newOne.setRating(restaurant.getRating());
+            }
+
+            db.save(newOne);
+
+            return newOne;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @DeleteMapping("/restaurants/{restaurantId}")
-    public void deleteRestaurant(@PathVariable("restaurantId") int restaurantId) {
-        s.deleteRestaurant(restaurantId);
+    @Override
+    public void deleteRestaurant(int restaurantId) {
+        try {
+            db.deleteById(restaurantId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
 }
