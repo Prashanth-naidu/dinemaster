@@ -20,8 +20,8 @@ public class ChefController {
     }
 
     @GetMapping("/restaurants/chefs/{chefId}")
-    public Chef getChefById(@PathVariable("id") int id) {
-        return s.getChefById(id);
+    public Chef getChefById(@PathVariable("chefId") int chefId) {
+        return s.getChefById(chefId);
     }
 
     @PostMapping("/restaurants/chefs")
@@ -30,17 +30,17 @@ public class ChefController {
     }
 
     @PutMapping("/restaurants/chefs/{chefId}")
-    public Chef updateChef(@PathVariable("id") int id, @RequestBody Chef chef) {
-        return s.updateChef(id, chef);
+    public Chef updateChef(@PathVariable("chefId") int chefId, @RequestBody Chef chef) {
+        return s.updateChef(chefId, chef);
     }
 
     @DeleteMapping("/restaurants/chefs/{chefId}")
-    public void deleteChef(@PathVariable int id) {
-        s.deleteChef(id);
+    public void deleteChef(@PathVariable int chefId) {
+        s.deleteChef(chefId);
     }
 
     @GetMapping("/chefs/{chefId}/restaurant")
-    public Restaurant getChefRestaurant(@PathVariable int id) {
-        return s.getChefRestaurant(id);
+    public Restaurant getChefRestaurant(@PathVariable int chefId) {
+        return s.getChefRestaurant(chefId);
     }
 }
