@@ -9,7 +9,7 @@ import com.example.dinemaster.model.Restaurant;
 import com.example.dinemaster.service.ChefJpaService;
 
 @RestController
-public class ChefController {
+public class ChefJpaService {
 
     @Autowired
     private ChefJpaService s;
