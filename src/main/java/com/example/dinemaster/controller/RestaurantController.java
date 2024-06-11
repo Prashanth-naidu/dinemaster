@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.example.dinemaster.model.Restaurant;
 import com.example.dinemaster.service.RestaurantJpaService;
-import com.example.dinemaster.service.RestaurantJpaservice;
+
 
 @RestController
 public class RestaurantController {
@@ -20,8 +20,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/{restaurantId}")
-    public Restaurant getRestaurantById(@PathVariable("id") int id) {
-        return s.getRestaurantById(id);
+    public Restaurant getRestaurantById(@PathVariable("restaurantId") int restaurantId) {
+        return s.getRestaurantById(restaurantId);
     }
 
     @PostMapping("/restaurants")
@@ -30,12 +30,13 @@ public class RestaurantController {
     }
 
     @PutMapping("/restaurants/{restaurantId}")
-    public Restaurant updateRestaurant(@PathVariable("id") int id, @RequestBody Restaurant restaurant) {
-        return s.updateRestaurant(id, restaurant);
+    public Restaurant updateRestaurant(@PathVariable("restaurantId") int restaurantId,
+            @RequestBody Restaurant restaurant) {
+        return s.updateRestaurant(restaurantId, restaurant);
     }
 
     @DeleteMapping("/restaurants/{restaurantId}")
-    public void deleteRestaurant(@PathVariable("id") int id) {
-        s.deleteRestaurant(id);
+    public void deleteRestaurant(@PathVariable("restaurantId") int restaurantId) {
+        s.deleteRestaurant(restaurantId);
     }
 }
